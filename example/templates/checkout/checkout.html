@@ -1,0 +1,192 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block cssblock %}
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <!-- animate CSS -->
+  <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+  <!-- owl carousel CSS -->
+  <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+  <!-- nice select CSS -->
+  <link rel="stylesheet" href="{% static 'css/nice-select.css' %}">
+  <!-- font awesome CSS -->
+  <link rel="stylesheet" href="{% static 'css/all.css' %}">
+  <!-- flaticon CSS -->
+  <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+  <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
+  <!-- font awesome CSS -->
+  <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+  <!-- swiper CSS -->
+  <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+  <link rel="stylesheet" href="{% static 'css/price_rangs.css' %}">
+  <!-- style CSS -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+  <!--================Checkout Area =================-->
+  <section class="checkout_area padding_top">
+    <div class="container">
+      <div class="billing_details">
+        <div class="row">
+          <div class="col-lg-8">
+              {% if error%}
+                <div class="alert alert-danger" role="alert">
+                    {{error}}
+                </div>
+              {% endif %}
+            <h3>Billing Details</h3>
+            <form class="row contact_form" id="checkout-form" action="#" method="post" novalidate="novalidate">
+              {% csrf_token %}
+              <div class="col-md-6 form-group p_star">
+                <input type="text" class="form-control" id="first-name" name="first-name" value="{{first_name}}" placeholder="First name"/>
+              </div>
+              <div class="col-md-6 form-group p_star">
+                <input type="text" class="form-control" id="last-name" name="last-name" value="{{last_name}}" placeholder="Last name"/>
+              </div>
+              <div class="col-md-12 form-group">
+                <input type="text" class="form-control" id="company" name="company" placeholder="Company name" value="{{company}}"/>
+              </div>
+              <div class="col-md-6 form-group p_star">
+                <input type="text" class="form-control" id="number" name="number" value="{{phone_number}}" placeholder="Phone number"/>
+              </div>
+              <div class="col-md-6 form-group p_star">
+                <input type="text" class="form-control" id="email" name="email" value="{{email}}" placeholder="Email address" />
+              </div>
+              <div class="col-md-6 form-group p_star">
+                <select class="countries country_select" name="country" id="countryId" >
+                  <option value="">{{country}}</option>
+                </select>
+              </div>
+              <div class="col-md-6 form-group p_star">
+                <select class="country_select states" name="state" id="stateId">
+                  <option value="">{{state}}</option>
+                </select>
+              </div>
+              <div class="col-md-6 form-group p_star">
+                <select class="country_select cities" name="city" id="cityId">
+                  <option value="">{{city}}</option>
+                </select>
+              </div>
+              <div class="col-md-12 form-group p_star">
+                <input type="text" class="form-control" id="add1" name="add1" value="{{add1}}" placeholder="Address line 01" />
+              </div>
+              <div class="col-md-12 form-group p_star">
+                <input type="text" class="form-control" id="add2" name="add2" value="{{add2}}" placeholder="Address line 02" />
+              </div>
+              <div class="col-md-12 form-group">
+                <input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP" value="{{zip}}" />
+              </div>
+              <div class="col-md-12 form-group">
+                <div class="creat_account">
+                  <h3>Shipping Details</h3>
+                </div>
+                <textarea class="form-control" name="message" id="message" rows="1"
+                  placeholder="Order Notes" value="{{message}}"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="col-lg-4">
+            <div class="order_box">
+              <h2>Your Order</h2>
+              <ul class="list">
+                <li>
+                  <a style="color: black">Product
+                    <span style="color: black">Total</span>
+                  </a>
+                </li>
+                {% for item in cart_items %}
+                <li>
+                  <a href="{{item.product.get_absolute_url}}">{{item.product.title}} ({{item.quantity}})
+                    <span class="last">${{item.get_total|floatformat:2}}</span>
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+              <ul class="list list_2">
+                <li>
+                  <a>Subtotal
+                    <span>${{sub_total|floatformat:2}}</span>
+                  </a>
+                </li>
+                <li>
+                  <a>Shipping
+                    <span>$50.00</span>
+                  </a>
+                </li>
+                <li>
+                  <a>Total
+                    <span>${{total|floatformat:2}}</span>
+                  </a>
+                </li>
+              </ul>
+<!--              <div class="payment_item">-->
+<!--                <div class="radion_btn">-->
+<!--                  <input type="radio" id="f-option5" name="selector" />-->
+<!--                  <label for="f-option5">Payment on delivery</label>-->
+<!--                  <div class="check"></div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div class="payment_item active">-->
+<!--                <div class="radion_btn">-->
+<!--                  <input type="radio" id="f-option6" name="selector" />-->
+<!--                  <label for="f-option6">Paypal </label>-->
+<!--                  <img src="{% static 'img/card.jpg' %}" alt="" />-->
+<!--                  <div class="check"></div>-->
+<!--                </div>-->
+<!--                <p>-->
+<!--                  Please send a check to Store Name, Store Street, Store Town,-->
+<!--                  Store State / County, Store Postcode.-->
+<!--                </p>-->
+<!--              </div>-->
+<!--              <div class="creat_account">-->
+<!--                <input type="checkbox" id="f-option4" name="selector" />-->
+<!--                <label for="f-option4">I’ve read and accept the </label>-->
+<!--                <a href="#">terms & conditions*</a>-->
+<!--              </div>-->
+              <button class="btn_3" type="submit" form="checkout-form" style="margin-top: 50px">Proceed</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--================End Checkout Area =================-->
+
+{% endblock %}
+
+
+{% block jsblock %}
+  <!-- jquery -->
+  <script src="{% static 'js/jquery-1.12.1.min.js' %}"></script>
+  <!-- popper js -->
+  <script src="{% static 'js/popper.min.js' %}"></script>
+  <!-- bootstrap js -->
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <!-- easing js -->
+  <script src="{% static 'js/jquery.magnific-popup.js' %}"></script>
+  <!-- swiper js -->
+  <script src="{% static 'js/swiper.min.js' %}"></script>
+  <!-- swiper js -->
+  <script src="{% static 'js/masonry.pkgd.js' %}"></script>
+  <!-- particles js -->
+  <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+  <!-- slick js -->
+  <script src="{% static 'js/slick.min.js' %}"></script>
+  <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+  <script src="{% static 'js/waypoints.min.js' %}"></script>
+  <script src="{% static 'js/contact.js' %}"></script>
+  <script src="{% static 'js/jquery.ajaxchimp.min.js' %}"></script>
+  <script src="{% static 'js/jquery.form.js' %}"></script>
+  <script src="{% static 'js/jquery.validate.min.js' %}"></script>
+  <script src="{% static 'js/mail-script.js' %}"></script>
+  <script src="{% static 'js/stellar.js' %}"></script>
+  <script src="{% static 'js/price_rangs.js' %}"></script>
+  <!-- custom js -->
+  <script src="{% static 'js/custom.js' %}"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="//geodata.solutions/includes/countrystatecity.js"></script>
+{% endblock %}
